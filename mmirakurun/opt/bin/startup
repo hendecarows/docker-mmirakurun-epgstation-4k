@@ -1,0 +1,102 @@
+#!/bin/bash
+
+uid=1000
+gid=1000
+build_dir=/app-build
+dest_dir=/opt
+
+#
+# install recdvb 4k
+#
+function install_recdvb() {
+  if !(type "recdvb" > /dev/null 2>&1); then
+    apt-get update
+    apt-get install -y --no-install-recommends git autoconf automake
+
+    cd $build_dir
+    git clone https://github.com/otya128/recdvb.git
+    cd recdvb
+    ./autogen.sh
+    ./configure --prefix $dest_dir
+    make
+    cp recdvb $dest_dir/bin
+  fi
+
+  recdvb -v
+}
+
+#
+# install recpt1
+#
+function install_recpt1() {
+  if !(type "recpt1" > /dev/null 2>&1); then
+    apt-get update
+    apt-get install -y --no-install-recommends git autoconf automake
+
+    cd $build_dir
+    git clone https://github.com/hendecarows/recpt1.git
+    cd recpt1/recpt1
+    ./autogen.sh
+    ./configure --prefix $dest_dir
+    make
+    cp recpt1 $dest_dir/bin
+  fi
+
+  recpt1 -v
+}
+
+#
+# install arib-b61-stream-test
+#
+function install_arib_b61_stream_test() {
+  if !(type "arib-b61-stream-test" > /dev/null 2>&1); then
+    apt-get update
+    apt-get install -y --no-install-recommends git cmake libssl-dev 
+
+    cd $build_dir
+    git clone https://github.com/hendecarows/arib-b61-stream-test.git
+    cd arib-b61-stream-test
+    mkdir build
+    cd build
+    cmake -DCMAKE_BUILD_TYPE=Release ..
+    make
+    cp arib-b61-stream-test/arib-b61-stream-test $dest_dir/bin
+  fi
+
+  arib-b61-stream-test -h
+}
+
+
+#
+# install arib-b25-stream-test
+#
+function install_arib_b25_stream_test() {
+  if !(type "arib-b25-stream-test" > /dev/null 2>&1); then
+    apt-get update
+    apt-get install -y --no-install-recommends git cmake pkg-config
+
+    cd $build_dir
+    git clone https://github.com/hendecarows/libaribb25.git
+    cd libaribb25
+    git checkout -b docker-4k origin/docker-4k
+    mkdir build
+    cd build
+    cmake -DBUILD_SHARED_B25 ..
+    make
+    cp arib-b25-stream-test $dest_dir/bin
+  fi
+
+  arib-b25-stream-test -h
+}
+
+
+mkdir $build_dir
+
+install_recdvb
+install_recpt1
+install_arib_b61_stream_test
+install_arib_b25_stream_test
+
+if [ -d $build_dir ]; then
+  rm -rf $build_dir
+fi

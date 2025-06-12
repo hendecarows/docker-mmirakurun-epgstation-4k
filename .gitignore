@@ -8,6 +8,9 @@
 /mmirakurun/data/*
 /mmirakurun/conf/*
 /mmirakurun/opt/*
+!/mmirakurun/opt/bin
+/mmirakurun/opt/bin/*
+!/mmirakurun/opt/bin/startup
 /epgstation/custom.Dockerfile
 /epgstation/thumbnail/*.jpg
 /epgstation/data/streamfiles/*.ts

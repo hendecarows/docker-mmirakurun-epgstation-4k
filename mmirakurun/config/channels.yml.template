@@ -38,7 +38,6 @@
   type: GR
   channel: '26'
   isDisabled: false
-
 - name: '16400'
   type: BS
   channel: '16400'
@@ -54,22 +53,6 @@
 - name: '16432'
   type: BS
   channel: '16432'
-  isDisabled: false
-- name: '17969'
-  type: BS
-  channel: '17969'
-  isDisabled: false
-- name: '17970'
-  type: BS
-  channel: '17970'
-  isDisabled: false
-- name: '17488'
-  type: BS
-  channel: '17488'
-  isDisabled: false
-- name: '17489'
-  type: BS
-  channel: '17489'
   isDisabled: false
 - name: '16528'
   type: BS
@@ -87,10 +70,6 @@
   type: BS
   channel: '16593'
   isDisabled: false
-- name: '18130'
-  type: BS
-  channel: '18130'
-  isDisabled: false
 - name: '16625'
   type: BS
   channel: '16625'
@@ -99,9 +78,25 @@
   type: BS
   channel: '16626'
   isDisabled: false
-- name: '18675'
+- name: '17488'
   type: BS
-  channel: '18675'
+  channel: '17488'
+  isDisabled: false
+- name: '17489'
+  type: BS
+  channel: '17489'
+  isDisabled: false
+- name: '17969'
+  type: BS
+  channel: '17969'
+  isDisabled: false
+- name: '17970'
+  type: BS
+  channel: '17970'
+  isDisabled: false
+- name: '18130'
+  type: BS
+  channel: '18130'
   isDisabled: false
 - name: '18224'
   type: BS
@@ -135,6 +130,10 @@
   type: BS
   channel: '18288'
   isDisabled: false
+- name: '18675'
+  type: BS
+  channel: '18675'
+  isDisabled: false
 - name: '18801'
   type: BS
   channel: '18801'
@@ -147,14 +146,6 @@
   type: CS
   channel: '24608'
   isDisabled: false
-- name: '28736'
-  type: CS
-  channel: '28736'
-  isDisabled: false
-- name: '28768'
-  type: CS
-  channel: '28768'
-  isDisabled: false
 - name: '24704'
   type: CS
   channel: '24704'
@@ -162,6 +153,14 @@
 - name: '24736'
   type: CS
   channel: '24736'
+  isDisabled: false
+- name: '28736'
+  type: CS
+  channel: '28736'
+  isDisabled: false
+- name: '28768'
+  type: CS
+  channel: '28768'
   isDisabled: false
 - name: '28864'
   type: CS
@@ -191,4 +190,33 @@
   type: CS
   channel: '29056'
   isDisabled: false
-
+- name: '45168'
+  type: BS4K
+  channel: '45168'
+- name: '45169'
+  type: BS4K
+  channel: '45169'
+- name: '45170'
+  type: BS4K
+  channel: '45170'
+- name: '45232'
+  type: BS4K
+  channel: '45232'
+- name: '45234'
+  type: BS4K
+  channel: '45234'
+- name: '45280'
+  type: BS4K
+  channel: '45280'
+- name: '45328'
+  type: BS4K
+  channel: '45328'
+- name: '45329'
+  type: BS4K
+  channel: '45329'
+- name: '45330'
+  type: BS4K
+  channel: '45330'
+- name: '45745'
+  type: BS4K
+  channel: '45745'

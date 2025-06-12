@@ -1,0 +1,6 @@
+[submodule "MMirakurun"]
+	path = submodule/MMirakurun
+	url = git@github.com:hendecarows/MMirakurun.git
+[submodule "submodule/EPGStation"]
+	path = submodule/EPGStation
+	url = https://github.com/otya128/EPGStation.git

@@ -1,0 +1,155 @@
+services:
+  mmirakurun:
+    # 環境変数
+    environment:
+      TZ: Asia/Tokyo
+      # set to "1" to disable pcscd
+      # pcscd を無効にする場合は "1"
+      DISABLE_PCSCD: "${DISABLE_PCSCD:-1}"
+      # set to "1" to disable fetch/build the B25 test decoder command
+      # B25 テストコマンドの取得とビルドを無効にする場合は "1"
+      DISABLE_B25_TEST: "${DISABLE_B25_TEST:-1}"
+      # comment out below if you commented out `network_mode: host`
+      # `network_mode: host` をコメントアウトする場合はここもコメントアウト
+      # DOCKER_NETWORK: host
+      # set hostname if accesing by hostname (other than IP address)
+      # ブラウザから IP アドレス以外でアクセスする場合はホスト名を設定
+      #hostname: localhost
+      # --
+      # for debug
+      #LOG_LEVEL: "3"
+      #DEBUG: "true"
+
+    # comment out `devices:` if you commented out all devices
+    # `devices` を全てコメントアウトした場合は `devices:` もコメントアウト
+    devices:
+      # if you use card readers
+      # カードリーダーを使う場合
+      # - /dev/bus:/dev/bus
+
+      # if use DVB devices
+      # DVB チューナーを使う場合
+      - /dev/dvb:/dev/dvb
+
+      # if use px4_drv devices
+      # px4_drv チューナーを使う場合
+      # PX-W3U4/W3PE4/W3PE5,PX-Q3U4/Q3PE4/Q3PE5
+      # - /dev/px4video0:/dev/px4video0
+      # - /dev/px4video1:/dev/px4video1
+      # - /dev/px4video2:/dev/px4video2
+      # - /dev/px4video3:/dev/px4video3
+      # - /dev/px4video4:/dev/px4video4
+      # - /dev/px4video5:/dev/px4video5
+      # - /dev/px4video6:/dev/px4video6
+      # - /dev/px4video7:/dev/px4video7
+      # PX-MLT5PE
+      # - /dev/pxmlt5video0:/dev/pxmlt5video0
+      # - /dev/pxmlt5video1:/dev/pxmlt5video1
+      # - /dev/pxmlt5video2:/dev/pxmlt5video2
+      # - /dev/pxmlt5video3:/dev/pxmlt5video3
+      # - /dev/pxmlt5video4:/dev/pxmlt5video4
+      # PX-MLT8PE
+      # - /dev/pxmlt8video0:/dev/pxmlt8video0
+      # - /dev/pxmlt8video1:/dev/pxmlt8video1
+      # - /dev/pxmlt8video2:/dev/pxmlt8video2
+      # - /dev/pxmlt8video3:/dev/pxmlt8video3
+      # - /dev/pxmlt8video4:/dev/pxmlt8video4
+      # - /dev/pxmlt8video5:/dev/pxmlt8video5
+      # - /dev/pxmlt8video6:/dev/pxmlt8video6
+      # - /dev/pxmlt8video7:/dev/pxmlt8video7
+      # PX-M1UR
+      # - /dev/pxm1urvideo0:/dev/pxm1urvideo0
+      # PX-S1UR
+      # - /dev/pxs1urvideo0:/dev/pxs1urvideo0
+      # DTV02-1T1S-U/DTV02A-1T1S-U
+      # - /dev/isdb2056video0:/dev/isdb2056video0
+      # DTV02A-4TS-P
+      # - /dev/isdb6014video0:/dev/isdb6014video0
+      # - /dev/isdb6014video1:/dev/isdb6014video1
+      # - /dev/isdb6014video2:/dev/isdb6014video2
+      # - /dev/isdb6014video3:/dev/isdb6014video3
+
+    ports:
+      - "40772:40772"
+      - "9229:9229"
+
+    volumes:
+      # you can change to any location if you want.
+      - ./mmirakurun/run:/var/run
+      - ./mmirakurun/opt:/opt
+      - ./mmirakurun/config:/app-config
+      - ./mmirakurun/data:/app-data
+
+      # if use host's pcscd (DISABLE_PCSCD=1)
+      # ホストの pcscd を使う場合 (DISABLE_PCSCD=1)
+      - /var/run/pcscd/pcscd.comm:/var/run/pcscd/pcscd.comm
+
+      # add all devices (for development purposes)
+      # 全てのデバイスを追加 (開発用)
+      # - /dev:/dev
+
+    container_name: mmirakurun4k
+    build:
+      context: ./submodule
+      dockerfile: ./Dockerfile.mmirakurun
+    # network_mode: host
+    cap_add:
+      - SYS_ADMIN
+      - SYS_NICE
+    device_cgroup_rules:
+      - 'c *:* rmw'
+    tmpfs:
+      - /tmp
+    restart: always
+    logging:
+      driver: json-file
+      options:
+        max-file: "1"
+        max-size: 10m
+
+  mysql:
+    image: mariadb:11.4
+    volumes:
+      - mysql-db:/var/lib/mysql
+    environment:
+      MYSQL_USER: epgstation
+      MYSQL_PASSWORD: epgstation
+      MYSQL_ROOT_PASSWORD: epgstation
+      MYSQL_DATABASE: epgstation
+      TZ: "Asia/Tokyo"
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --performance-schema=false --expire_logs_days=1 # for mariadb
+    # command: --character-set-server=utf8mb4 --collation-server=utf8mb4_0900_as_ci --performance-schema=false --expire_logs_days=1 --default-authentication-plugin=mysql_native_password # for myql
+    restart: always
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  epgstation:
+    container_name: epgstation4k
+    build:
+      context: ./submodule/EPGStation
+      dockerfile: ../Dockerfile.epgstation
+    volumes:
+      - ./epgstation/config:/app/config
+      - ./epgstation/data:/app/data
+      - ./epgstation/thumbnail:/app/thumbnail
+      - ./epgstation/logs:/app/logs
+      - ./epgstation/drop:/app/drop
+      - ./recorded:/app/recorded
+    environment:
+      TZ: "Asia/Tokyo"
+    depends_on:
+      - mmirakurun
+      - mysql
+    ports:
+      - "8888:8888"
+      - "8889:8889"
+    user: "1000:1000"
+    devices:
+        - /dev/dri:/dev/dri
+    restart: always
+
+volumes:
+    mysql-db:
+        driver: local

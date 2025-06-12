@@ -1,0 +1,19 @@
+- name: adapter0
+  types:
+    - GR
+    - BS
+    - CS
+    - BS4K
+  command: recdvb --dev 0 <channel> - -
+  decoder: arib-b25-stream-test -a 1
+  tlvDecoder: arib-b61-stream-test
+
+- name: adapter1
+  types:
+    - GR
+    - BS
+    - CS
+    - BS4K
+  command: recdvb --dev 1 <channel> - -
+  decoder: arib-b25-stream-test -a 1
+  tlvDecoder: arib-b61-stream-test

@@ -81,7 +81,7 @@ function install_arib_b25_stream_test() {
     git checkout -b docker-4k origin/docker-4k
     mkdir build
     cd build
-    cmake -DBUILD_SHARED_B25 ..
+    cmake -DBUILD_SHARED_B25=OFF ..
     make
     cp arib-b25-stream-test $dest_dir/bin
   fi

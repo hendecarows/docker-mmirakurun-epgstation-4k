@@ -6,7 +6,10 @@
 /recorded/*
 /mmirakurun/run/*
 /mmirakurun/data/*
-/mmirakurun/conf/*
+/mmirakurun/config/*
+!/mmirakurun/config/channels.yml.template
+!/mmirakurun/config/server.yml.template
+!/mmirakurun/config/tuners.yml.template
 /mmirakurun/opt/*
 !/mmirakurun/opt/bin
 /mmirakurun/opt/bin/*

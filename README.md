@@ -27,7 +27,7 @@ git clone https://github.com/hendecarows/docker-mmirakurun-epgstation-4k
 cd docker-mmirakurun-epgstation-4k
 git submodule update --init --recursive
 ./setup.sh
-vi mmirakurun/config/cahnnels.yml
+vi mmirakurun/config/channels.yml
 vi mmirakurun/config/tuners.yml
 vi epgstation/config/config.yml
 docker compose build
